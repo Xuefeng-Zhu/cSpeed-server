@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Xuefeng-Zhu/speedtest_heroku",
   "dependencies": {
+    "express": "^4.8.3",
     "firebase": "^1.0.19"
   }
 }
