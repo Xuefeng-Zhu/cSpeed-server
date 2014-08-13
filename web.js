@@ -31,10 +31,16 @@ fb.child('individuals').on("value", function(dataSnapshot) {
         }
         total.count += 1;
     }
-    fb.child('test').set(total);
+    for (var i in total){
+        if (i != "count"){
+            total[i].sort();
+            fb.child('test/' + i).set(total[i][Math.floor(total[i].length/2)]);
+        }
+    }
+    fb.child('test/child').set(total.count);
 });
 
-var port = Number(process.env.PORT || 5000);
+var port = Number(process.env.PORT || 7000);
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
