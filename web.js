@@ -1,4 +1,5 @@
 var Firebase = require('firebase');
+var express = require("express");
 
 var fb = new Firebase('https://speedtest.firebaseio.com/');
 var app = express();
