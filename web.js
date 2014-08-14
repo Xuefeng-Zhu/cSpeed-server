@@ -35,8 +35,7 @@ fb.child('individuals').on("value", function(dataSnapshot) {
                 median: [0],
                 count: 0
             };
-        }
-        else{
+        } else {
             region[ip.city][ip.isp].median.push(0);
         }
 
@@ -66,21 +65,24 @@ fb.child('individuals').on("value", function(dataSnapshot) {
     for (var i in total) {
         if (i != "count") {
             total[i].sort();
-            fb.child(['test',i].join('/')).set(total[i][Math.floor(total[i].length / 2)]);
+            fb.child(['total',i].join('/')).set(total[i][Math.floor(total[i].length / 2)]);
         }
     }
-    fb.child('test/child').set(total.count);
+    fb.child('total/child').set(total.count);
 
     //find median for region
-    for (var i in region){
+    for (var i in region) {
         var city = region[i];
-        for (var isp in city){
-            if (isp != "count"){
+        for (var isp in city) {
+            if (isp != "count") {
                 city[isp].median.sort();
-                fb.child(['region', i, isp, 'median'].join('/')).set(city[isp].median[Math.floor(city[isp].count/2)]);
+                fb.child(['region', i, isp, 'median'].join('/')).set(city[isp].median[Math.floor(city[isp].count / 2)]);
             }
         }
+        fb.child(['region', i, 'count'].join('/')).set(city.count);
+        fb.child(['region', i, isp, 'count'].join('/')).set(city[isp].count);
     }
+
 });
 
 var port = Number(process.env.PORT || 7000);
