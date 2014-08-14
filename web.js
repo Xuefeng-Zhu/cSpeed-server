@@ -24,19 +24,22 @@ fb.child('individuals').on("value", function(dataSnapshot) {
             total.median = [0];
         }
 
-        if (region[ip.city] == undefined) {
+        if (region[ip.city]) {
+            region[ip.city].median.push(0);
+        } else {
             region[ip.city] = {
+                median: [0],
                 count: 0
             };
         }
 
-        if (region[ip.city][ip.isp] == undefined) {
+        if (region[ip.city][ip.isp]) {
+            region[ip.city][ip.isp].median.push(0);
+        } else {
             region[ip.city][ip.isp] = {
                 median: [0],
                 count: 0
             };
-        } else {
-            region[ip.city][ip.isp].median.push(0);
         }
 
         for (var site in test) {
@@ -53,7 +56,9 @@ fb.child('individuals').on("value", function(dataSnapshot) {
                 total.median[total.count] += load_time;
 
                 //load data into region
-                var temp = region[ip.city][ip.isp];
+                var temp = region[ip.city];
+                temp.median[temp.count] += load_time;
+                temp = region[ip.city][ip.isp];
                 temp.median[temp.count] += load_time;
             }
         }
@@ -65,7 +70,7 @@ fb.child('individuals').on("value", function(dataSnapshot) {
     for (var i in total) {
         if (i != "count") {
             total[i].sort();
-            fb.child(['total',i].join('/')).set(total[i][Math.floor(total[i].length / 2)]);
+            fb.child(['total', i].join('/')).set(total[i][Math.floor(total[i].length / 2)]);
         }
     }
     fb.child('total/child').set(total.count);
@@ -74,11 +79,14 @@ fb.child('individuals').on("value", function(dataSnapshot) {
     for (var i in region) {
         var city = region[i];
         for (var isp in city) {
-            if (isp != "count") {
+            if (isp != "count" && isp != "median") {
                 city[isp].median.sort();
                 fb.child(['region', i, isp, 'median'].join('/')).set(city[isp].median[Math.floor(city[isp].count / 2)]);
             }
         }
+        city.median.sort();
+        fb.child(['region', i, 'median'].join('/')).set(city.median[Math.floor(city.count/2)]);
+
         fb.child(['region', i, 'count'].join('/')).set(city.count);
         fb.child(['region', i, isp, 'count'].join('/')).set(city[isp].count);
     }
