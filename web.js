@@ -12,11 +12,6 @@ var region = {
 
 };
 
-var sisterCity = {
-    "Urbana" : "Champaign-Urbana",
-    "Champaign" : "Champaign-Urbana"
-}
-
 fb.child('individuals').on("child_added", function(dataSnapshot) {
     var test = dataSnapshot.val();
     var ip = test.user_info.ip;
@@ -25,11 +20,6 @@ fb.child('individuals').on("child_added", function(dataSnapshot) {
         total.median.push(0);
     } else {
         total.median = [0];
-    }
-
-    //map sisterCity
-    if (sisterCity[ip.city]){
-        ip.city = sisterCity[ip.city];
     }
 
     if (region[ip.city]) {
