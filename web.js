@@ -5,7 +5,8 @@ var fb = new Firebase('https://speedtest.firebaseio.com/');
 var app = express();
 
 var total = {
-    count: 0
+    count: 0,
+    perf: []
 };
 
 var region = {
@@ -60,6 +61,8 @@ fb.child('individuals').on("child_added", function(dataSnapshot) {
             temp.median[temp.count] += load_time;
         }
     }
+    total.perf.push(test.user_info.performance);
+
     total.count += 1;
     region[ip.city].count += 1;
     region[ip.city][ip.isp].count += 1;
