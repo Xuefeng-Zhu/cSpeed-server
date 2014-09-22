@@ -1,5 +1,3 @@
-cSpeed-server
-================
 ## Chrome Extension
 The code for Chrome Extension is avaible [here](https://github.com/Xuefeng-Zhu/cSpeed)
 
