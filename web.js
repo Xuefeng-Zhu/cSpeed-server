@@ -1,7 +1,19 @@
 var Firebase = require('firebase');
 var express = require("express");
+var FirebaseTokenGenerator = require("firebase-token-generator");
+var tokenGenerator = new FirebaseTokenGenerator("RHvVMTP2dcNgPDWneTn6njIqpvSJydVOvJQ0BCdP");
+var token = tokenGenerator.createToken({uid: "1", some: "arbitrary", data: "here"});
 
-var fb = new Firebase('https://speedtest.firebaseio.com/');
+var fb = new Firebase('https://speedtes2.firebaseio.com/');
+
+fb.authWithCustomToken(token, function(error, authData) {
+  if (error) {
+    console.log("Login Failed!", error);
+  } else {
+    console.log("Login Succeeded!", authData);
+  }
+});
+
 var app = express();
 
 var total = {
