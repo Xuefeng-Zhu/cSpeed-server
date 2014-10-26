@@ -16,6 +16,9 @@ var region = {
 fb.child('individuals').on("child_added", function(dataSnapshot) {
     var test = dataSnapshot.val();
     var ip = test.user_info.ip;
+    if (ip == undefined){
+        return;
+    }
 
     if (total.median) {
         total.median.push(0);
@@ -82,14 +85,14 @@ fb.child('individuals').on("child_added", function(dataSnapshot) {
         for (var isp in city) {
             if (isp != "count" && isp != "median") {
                 city[isp].median.sort();
-                fb.child(['region', i, isp, 'median'].join('/')).set(city[isp].median[Math.floor(city[isp].count / 2)]);
+                fb.child(['region', i, isp.replace(/\./g, '-'), 'median'].join('/')).set(city[isp].median[Math.floor(city[isp].count / 2)]);
+                fb.child(['region', i, isp.replace(/\./g, '-'), 'count'].join('/')).set(city[isp].count);
             }
         }
         city.median.sort();
         fb.child(['region', i, 'median'].join('/')).set(city.median[Math.floor(city.count / 2)]);
 
         fb.child(['region', i, 'count'].join('/')).set(city.count);
-        fb.child(['region', i, isp, 'count'].join('/')).set(city[isp].count);
     }
 
 });
