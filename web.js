@@ -84,7 +84,7 @@ fb.child('individuals').on("child_added", function(dataSnapshot) {
     //find median value for total
     for (var i in total) {
         if (i != "count") {
-            total[i].sort();
+            total[i].sort(function(a,b){return a - b});
             fb.child(['total', i].join('/')).set(total[i][Math.floor(total[i].length / 2)]);
         }
     }
