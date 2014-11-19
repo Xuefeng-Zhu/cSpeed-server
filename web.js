@@ -95,12 +95,12 @@ fb.child('individuals').on("child_added", function(dataSnapshot) {
         var city = region[i];
         for (var isp in city) {
             if (isp != "count" && isp != "median") {
-                city[isp].median.sort();
+                city[isp].median.sort(function(a,b){return a - b});
                 fb.child(['region', i, isp.replace(/\./g, '-'), 'median'].join('/')).set(city[isp].median[Math.floor(city[isp].count / 2)]);
                 fb.child(['region', i, isp.replace(/\./g, '-'), 'count'].join('/')).set(city[isp].count);
             }
         }
-        city.median.sort();
+        city.median.sort(function(a,b){return a - b});
         fb.child(['region', i, 'median'].join('/')).set(city.median[Math.floor(city.count / 2)]);
 
         fb.child(['region', i, 'count'].join('/')).set(city.count);
