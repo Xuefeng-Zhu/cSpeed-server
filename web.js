@@ -109,6 +109,9 @@ fb.child('individuals').on("child_added", function(dataSnapshot) {
 
 });
 
+app.get('/', function (req, res) {
+  res.send('Hello World!')
+});
 
 var port = Number(process.env.PORT || 7000);
 app.listen(port, function() {
