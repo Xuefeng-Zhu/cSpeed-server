@@ -1,7 +1,6 @@
 var Firebase = require('firebase');
 var express = require("express");
 var FirebaseTokenGenerator = require("firebase-token-generator");
-<<<<<<< HEAD
 var tokenGenerator = new FirebaseTokenGenerator("0K1SkrefITuWS3iUl34dIOTOGyZUirTlgmmEQI3k");
 var token = tokenGenerator.createToken({uid: "1", some: "arbitrary", data: "here"});
 
@@ -14,21 +13,6 @@ fb.authWithCustomToken(token, function(error, authData) {
   }
 });
 
-=======
-var tokenGenerator = new FirebaseTokenGenerator("RHvVMTP2dcNgPDWneTn6njIqpvSJydVOvJQ0BCdP");
-var token = tokenGenerator.createToken({uid: "1", some: "arbitrary", data: "here"});
-
-var fb = new Firebase('https://speedtes2.firebaseio.com/');
-
-fb.authWithCustomToken(token, function(error, authData) {
-  if (error) {
-    console.log("Login Failed!", error);
-  } else {
-    console.log("Login Succeeded!", authData);
-  }
-});
-
->>>>>>> e90c276431f313dfc7fd8af6f06a341a834a869b
 var app = express();
 
 var total = {
