@@ -17,7 +17,7 @@ var app = express();
 
 var total = {
     count: 0,
-    perf: []
+    perf: 0
 };
 
 var region = {
@@ -62,9 +62,9 @@ fb.child('individuals').on("child_added", function(dataSnapshot) {
 
             //load data into total 
             if (total[site]) {
-                total[site].push(load_time);
+                total[site] += load_time;
             } else {
-                total[site] = [load_time];
+                total[site] = load_time;
             }
             total.median[total.count] += load_time;
 
@@ -75,17 +75,18 @@ fb.child('individuals').on("child_added", function(dataSnapshot) {
             temp.median[temp.count] += load_time;
         }
     }
-    total.perf.push(test.user_info.performance);
+    total.perf += test.user_info.performance;
 
     total.count += 1;
     region[ip.city].count += 1;
     region[ip.city][ip.isp].count += 1;
 
     //find median value for total
+    total['median'].sort(function(a,b){return a - b});
+    fb.child(['total', 'median'].join('/')).set(total['median'][Math.floor(total['median'].length / 2)]);
     for (var i in total) {
-        if (i != "count") {
-            total[i].sort(function(a,b){return a - b});
-            fb.child(['total', i].join('/')).set(total[i][Math.floor(total[i].length / 2)]);
+        if (i != "count" && i != 'median') {
+            fb.child(['total', i].join('/')).set(total[i] / total['count']);
         }
     }
     fb.child('total/count').set(total.count);
@@ -102,7 +103,6 @@ fb.child('individuals').on("child_added", function(dataSnapshot) {
         }
         city.median.sort(function(a,b){return a - b});
         fb.child(['region', i, 'median'].join('/')).set(city.median[Math.floor(city.count / 2)]);
-
         fb.child(['region', i, 'count'].join('/')).set(city.count);
     }
 
