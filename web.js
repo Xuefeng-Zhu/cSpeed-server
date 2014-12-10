@@ -1,10 +1,10 @@
 var Firebase = require('firebase');
 var express = require("express");
 var FirebaseTokenGenerator = require("firebase-token-generator");
-var tokenGenerator = new FirebaseTokenGenerator("18No8Oq2utIvLmMnyBxHwwpfloTp842KW8uReJqH");
+var tokenGenerator = new FirebaseTokenGenerator("RHvVMTP2dcNgPDWneTn6njIqpvSJydVOvJQ0BCdP");
 var token = tokenGenerator.createToken({uid: "1", some: "arbitrary", data: "here"});
 
-var fb = new Firebase('https://speedtest.firebaseio.com/');
+var fb = new Firebase('https://speedtes2.firebaseio.com/');
 fb.authWithCustomToken(token, function(error, authData) {
   if (error) {
     console.log("Login Failed!", error);
@@ -31,25 +31,26 @@ fb.child('individuals').on("child_added", function(dataSnapshot) {
         return;
     }
 
+    var location = [ip.city, ip.region, ip.country].join('_');
     if (total.median) {
         total.median.push(0);
     } else {
         total.median = [0];
     }
 
-    if (region[ip.city]) {
-        region[ip.city].median.push(0);
+    if (region[location]) {
+        region[location].median.push(0);
     } else {
-        region[ip.city] = {
+        region[location] = {
             median: [0],
             count: 0
         };
     }
 
-    if (region[ip.city][ip.isp]) {
-        region[ip.city][ip.isp].median.push(0);
+    if (region[location][ip.isp]) {
+        region[location][ip.isp].median.push(0);
     } else {
-        region[ip.city][ip.isp] = {
+        region[location][ip.isp] = {
             median: [0],
             count: 0
         };
@@ -69,17 +70,17 @@ fb.child('individuals').on("child_added", function(dataSnapshot) {
             total.median[total.count] += load_time;
 
             //load data into region
-            var temp = region[ip.city];
+            var temp = region[location];
             temp.median[temp.count] += load_time;
-            temp = region[ip.city][ip.isp];
+            temp = region[location][ip.isp];
             temp.median[temp.count] += load_time;
         }
     }
     total.perf += test.user_info.performance;
 
     total.count += 1;
-    region[ip.city].count += 1;
-    region[ip.city][ip.isp].count += 1;
+    region[location].count += 1;
+    region[location][ip.isp].count += 1;
 
     //find median value for total
     total['median'].sort(function(a,b){return a - b});
