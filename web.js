@@ -1,10 +1,10 @@
 var Firebase = require('firebase');
 var express = require("express");
 var FirebaseTokenGenerator = require("firebase-token-generator");
-var tokenGenerator = new FirebaseTokenGenerator("RHvVMTP2dcNgPDWneTn6njIqpvSJydVOvJQ0BCdP");
+var tokenGenerator = new FirebaseTokenGenerator("18No8Oq2utIvLmMnyBxHwwpfloTp842KW8uReJqH");
 var token = tokenGenerator.createToken({uid: "1", some: "arbitrary", data: "here"});
 
-var fb = new Firebase('https://speedtes2.firebaseio.com/');
+var fb = new Firebase('https://speedtest.firebaseio.com/');
 fb.authWithCustomToken(token, function(error, authData) {
   if (error) {
     console.log("Login Failed!", error);
