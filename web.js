@@ -1,7 +1,7 @@
 var Firebase = require('firebase');
 var express = require("express");
 var FirebaseTokenGenerator = require("firebase-token-generator");
-var tokenGenerator = new FirebaseTokenGenerator("18No8Oq2utIvLmMnyBxHwwpfloTp842KW8uReJqH");
+var tokenGenerator = new FirebaseTokenGenerator(process.env.FIREBASE);
 var token = tokenGenerator.createToken({uid: "1", some: "arbitrary", data: "here"});
 
 var fb = new Firebase('https://speedtest.firebaseio.com/');
